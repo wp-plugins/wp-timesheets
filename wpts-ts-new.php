@@ -140,19 +140,19 @@ if($user_check === false) {
 } elseif (($_REQUEST['doaction'] == 'Insert') || ($_REQUEST['doaction'] == 'Update')) {
 if($_REQUEST['doaction'] == 'Insert') {
 	if (!current_user_can('manage_options')) $_REQUEST['ts_author'] =  $current_user->ID;
-	$ts_validate = $wpdb->get_results("SELECT * FROM wp_timesheets WHERE ts_author = ".$_REQUEST['ts_author']." AND ts_date = '".date('Y-m-d',strtotime($_REQUEST['ts_date']))."'", ARRAY_N);
+	$ts_validate = $wpdb->get_results("SELECT * FROM ".$table_name." WHERE ts_author = ".$_REQUEST['ts_author']." AND ts_date = '".date('Y-m-d',strtotime($_REQUEST['ts_date']))."'", ARRAY_N);
 	if(sizeof($ts_validate) > 0){
 		$class = 'error';
 		$message = 'Timesheet data for the same day already exists.';
 	} else {
 		if (!current_user_can('manage_options')) $_REQUEST['ts_author'] =  $current_user->ID;
-		$wpdb->query("INSERT INTO wp_timesheets (`ID`, `ts_author`, `ts_date`, `ts_job_name`, `ts_description`, `ts_time_in`, `ts_time_out`, `ts_hours`) VALUES (NULL, ".$_REQUEST['ts_author'].", '".date('Y-m-d',strtotime($_REQUEST['ts_date']))."', '".$_REQUEST['ts_job_name']."', '".$_REQUEST['ts_description']."', '".date('G:i',strtotime($_REQUEST['ts_time_in']))."', '".date('G:i',strtotime($_REQUEST['ts_time_out']))."', '".$_REQUEST['ts_hours']."')");		
+		$wpdb->query("INSERT INTO ".$table_name." (`ID`, `ts_author`, `ts_date`, `ts_job_name`, `ts_description`, `ts_time_in`, `ts_time_out`, `ts_hours`) VALUES (NULL, ".$_REQUEST['ts_author'].", '".date('Y-m-d',strtotime($_REQUEST['ts_date']))."', '".$_REQUEST['ts_job_name']."', '".$_REQUEST['ts_description']."', '".date('G:i',strtotime($_REQUEST['ts_time_in']))."', '".date('G:i',strtotime($_REQUEST['ts_time_out']))."', '".$_REQUEST['ts_hours']."')");		
 		$class = 'updated';
 		$message = 'Timesheet saved.';
 	}
 } elseif($_REQUEST['doaction'] == 'Update') {
 	if (current_user_can('manage_options')) {
-		$wpdb->query("UPDATE wp_timesheets SET `ts_job_name` = '".$_REQUEST['ts_job_name']."', `ts_description` = '".$_REQUEST['ts_description']."', `ts_time_in` = '".date('G:i',strtotime($_REQUEST['ts_time_in']))."', `ts_time_out` = '".date('G:i',strtotime($_REQUEST['ts_time_out']))."',`ts_hours` = '".$_REQUEST['ts_hours']."' WHERE ID = '".$_REQUEST['ID']."'");
+		$wpdb->query("UPDATE ".$table_name." SET `ts_job_name` = '".$_REQUEST['ts_job_name']."', `ts_description` = '".$_REQUEST['ts_description']."', `ts_time_in` = '".date('G:i',strtotime($_REQUEST['ts_time_in']))."', `ts_time_out` = '".date('G:i',strtotime($_REQUEST['ts_time_out']))."',`ts_hours` = '".$_REQUEST['ts_hours']."' WHERE ID = '".$_REQUEST['ID']."'");
 		$class = 'updated';
 		$message = 'Timesheet updated.';
 	} else {

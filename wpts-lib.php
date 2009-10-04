@@ -4,6 +4,7 @@
 global $current_user;
 global $wpdb;
 get_currentuserinfo();
+$table_name = $wpdb->prefix . 'timesheets';
 
 //	Set default values for month and year and query timesheet data from $wpdb
 if((!isset($_REQUEST['doaction']) || ($_REQUEST['doaction'] == 'View')) && ($_REQUEST['page'] == 'wpts-ts-new.php')) {
@@ -14,9 +15,9 @@ if((!isset($_REQUEST['doaction']) || ($_REQUEST['doaction'] == 'View')) && ($_RE
 	$ts_month = mktime(23,59,59,$_REQUEST['month'],1,$_REQUEST['year']);
 	$ts_d1 = date('Y-m-d', mktime(12,1,1,date('n',$ts_month),1,date('Y',$ts_month)));
 	$ts_d2 = date('Y-m-d', mktime(12,1,1,date('n',$ts_month),date('t',$ts_month),date('Y',$ts_month)));
-	$ts_timesheet = $wpdb->get_results("SELECT ID, ts_author, ts_date, ts_job_name, ts_description, time_format(ts_time_in, '%h:%i %p'), time_format(ts_time_out, '%h:%i %p'), time_format(ts_hours, '%h:%i') FROM wp_timesheets WHERE ts_author = ".$_REQUEST['ts_author']." AND ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."'", ARRAY_N);
+	$ts_timesheet = $wpdb->get_results("SELECT ID, ts_author, ts_date, ts_job_name, ts_description, time_format(ts_time_in, '%h:%i %p'), time_format(ts_time_out, '%h:%i %p'), time_format(ts_hours, '%h:%i') FROM ".$table_name." WHERE ts_author = ".$_REQUEST['ts_author']." AND ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."'", ARRAY_N);
 } elseif(($_REQUEST['doaction'] == 'Edit') && ($_REQUEST['page'] == 'wpts-ts-new.php')) {
-	$ts_timesheet = $wpdb->get_results("SELECT ID, ts_author, ts_date, ts_job_name, ts_description, ts_time_in, ts_time_out, ts_hours FROM wp_timesheets WHERE ID = ".$_REQUEST['ID'], ARRAY_N);
+	$ts_timesheet = $wpdb->get_results("SELECT ID, ts_author, ts_date, ts_job_name, ts_description, ts_time_in, ts_time_out, ts_hours FROM ".$table_name." WHERE ID = ".$_REQUEST['ID'], ARRAY_N);
 } elseif ($_REQUEST['page'] == 'wpts-reports.php') {
 	if((!isset($_REQUEST['ts_date1'])) || (strtotime($_REQUEST['ts_date1']) === false)) $_REQUEST['ts_date1'] = date('Y-m-d', mktime(12,1,1,date('n'),1,date('Y')));
 	if((!isset($_REQUEST['ts_date2'])) || (strtotime($_REQUEST['ts_date2']) === false)) $_REQUEST['ts_date2'] = date('Y-m-d');
@@ -33,25 +34,24 @@ if((!isset($_REQUEST['doaction']) || ($_REQUEST['doaction'] == 'View')) && ($_RE
 		}
 	}
 	if($_REQUEST['ts_group_type'] == 'list'){
-		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT ID, ts_author, date_format(ts_date,'%M %e, %Y'), ts_job_name, ts_description, time_format(ts_time_in, '%h:%i %p'), time_format(ts_time_out, '%h:%i %p'), time_format(ts_hours, '%h:%i') FROM wp_timesheets WHERE ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' ORDER BY ts_date", ARRAY_N); } 
-		else {$ts_timesheet = $wpdb->get_results("SELECT ID, ts_author, date_format(ts_date,'%M %e, %Y'), ts_job_name, ts_description, time_format(ts_time_in, '%h:%i %p'), time_format(ts_time_out, '%h:%i %p'), time_format(ts_hours, '%h:%i') FROM wp_timesheets WHERE ts_author = '".$ts_author."' AND ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' ORDER BY ts_date", ARRAY_N); }
+		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT ID, ts_author, date_format(ts_date,'%M %e, %Y'), ts_job_name, ts_description, time_format(ts_time_in, '%h:%i %p'), time_format(ts_time_out, '%h:%i %p'), time_format(ts_hours, '%h:%i') FROM ".$table_name." WHERE ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' ORDER BY ts_date", ARRAY_N); } 
+		else {$ts_timesheet = $wpdb->get_results("SELECT ID, ts_author, date_format(ts_date,'%M %e, %Y'), ts_job_name, ts_description, time_format(ts_time_in, '%h:%i %p'), time_format(ts_time_out, '%h:%i %p'), time_format(ts_hours, '%h:%i') FROM ".$table_name." WHERE ts_author = '".$ts_author."' AND ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' ORDER BY ts_date", ARRAY_N); }
 	} elseif($_REQUEST['ts_group_type'] == 'by_author') {
-		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT ts_author, Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM wp_timesheets WHERE ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY ts_author ORDER BY ts_date", ARRAY_N); } 
-		else {$ts_timesheet = $wpdb->get_results("SELECT ts_author, Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM wp_timesheets WHERE ts_author = '".$ts_author."' AND ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY ts_author ORDER BY ts_date ", ARRAY_N); }	
+		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT ts_author, Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM ".$table_name." WHERE ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY ts_author ORDER BY ts_date", ARRAY_N); } 
+		else {$ts_timesheet = $wpdb->get_results("SELECT ts_author, Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM ".$table_name." WHERE ts_author = '".$ts_author."' AND ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY ts_author ORDER BY ts_date ", ARRAY_N); }	
 	} elseif($_REQUEST['ts_group_type'] == 'by_job_name') {
-		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT ts_job_name, Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM wp_timesheets WHERE ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY ts_job_name ORDER BY ts_date", ARRAY_N); } 
-		else {$ts_timesheet = $wpdb->get_results("SELECT ts_job_name, Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM wp_timesheets WHERE ts_author = '".$ts_author."' AND ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY ts_job_name ORDER BY ts_date", ARRAY_N); }			
+		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT ts_job_name, Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM ".$table_name." WHERE ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY ts_job_name ORDER BY ts_date", ARRAY_N); } 
+		else {$ts_timesheet = $wpdb->get_results("SELECT ts_job_name, Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM ".$table_name." WHERE ts_author = '".$ts_author."' AND ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY ts_job_name ORDER BY ts_date", ARRAY_N); }			
 	} elseif($_REQUEST['ts_group_type'] == 'by_date') {
-		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_date,'%M %e, %Y'), Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM wp_timesheets WHERE ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY date_format(ts_date,'%M %e, %Y') ORDER BY ts_date ", ARRAY_N); } 
-		else {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_date,'%M %e, %Y'), Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM wp_timesheets WHERE ts_author = '".$ts_author."' AND ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY date_format(ts_date,'%M %e, %Y') ORDER BY ts_date ", ARRAY_N); }		
+		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_date,'%M %e, %Y'), Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM ".$table_name." WHERE ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY date_format(ts_date,'%M %e, %Y') ORDER BY ts_date ", ARRAY_N); } 
+		else {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_date,'%M %e, %Y'), Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM ".$table_name." WHERE ts_author = '".$ts_author."' AND ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY date_format(ts_date,'%M %e, %Y') ORDER BY ts_date ", ARRAY_N); }		
 	} elseif($_REQUEST['ts_group_type'] == 'by_week') {
-		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_date,'Week %u of %Y'), Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM wp_timesheets WHERE ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY WEEK(ts_date,1) ORDER BY ts_date ", ARRAY_N); } 
-		else {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_date,'Week %u of %Y'), Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM wp_timesheets WHERE ts_author = '".$ts_author."' AND ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY WEEK(ts_date,1) ORDER BY ts_date ", ARRAY_N); }		
+		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_date,'Week %u of %Y'), Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM ".$table_name." WHERE ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY WEEK(ts_date,1) ORDER BY ts_date ", ARRAY_N); } 
+		else {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_date,'Week %u of %Y'), Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM ".$table_name." WHERE ts_author = '".$ts_author."' AND ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY WEEK(ts_date,1) ORDER BY ts_date ", ARRAY_N); }		
 	} elseif($_REQUEST['ts_group_type'] == 'by_month') {
-		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_date,'%M, %Y'), Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM wp_timesheets WHERE ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY date_format(ts_date,'%M, %Y') ORDER BY ts_date", ARRAY_N); } 
-		else {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_date,'%M, %Y'), Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM wp_timesheets WHERE ts_author = '".$ts_author."' AND ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY date_format(ts_date,'%M, %Y') ORDER BY ts_date", ARRAY_N); }		
+		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_date,'%M, %Y'), Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM ".$table_name." WHERE ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY date_format(ts_date,'%M, %Y') ORDER BY ts_date", ARRAY_N); } 
+		else {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_date,'%M, %Y'), Sec_to_Time(Sum(Time_to_Sec(ts_hours))) FROM ".$table_name." WHERE ts_author = '".$ts_author."' AND ts_date >= '".$ts_d1."' AND ts_date <= '".$ts_d2."' GROUP BY date_format(ts_date,'%M, %Y') ORDER BY ts_date", ARRAY_N); }		
 	}
-	//print_r($ts_timesheet);
 }
 
 //	Create select options for month and year 

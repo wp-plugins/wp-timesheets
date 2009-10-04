@@ -4,7 +4,7 @@ Donate link: http://webdlabs.com/projects/donate/
 Tags: timesheet, dashboard, admin, users
 Requires at least: 2.6
 Tested up to: 2.8.4
-Stable tag: 0.1
+Stable tag: 0.2
 
 A simple timesheet application within WordPress Dashboard to manage time of your blog users.
 
