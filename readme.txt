@@ -26,3 +26,7 @@ A simple timesheet application within WordPress Dashboard to manage time of your
 **Version 0.1**
 
 1. Beta Release
+
+**Version 0.2**
+
+1. Bug Fix: WP Table prefix bug fix.
