@@ -8,8 +8,8 @@ jQuery(function() {
 	
 	var oldTime = jQuery.timePicker("#ts_time_in").getTime();
 	var duration = (jQuery.timePicker("#ts_time_out").getTime() - oldTime);
-	jQuery("#ts_hours_display").val(time_diff(duration));
-	jQuery("#ts_hours").val(time_diff(duration));
+	jQuery("#ts_hours_display").html(time_diff(duration)+' hrs');
+	//jQuery("#ts_hours").val(time_diff(duration));
 		
 	// Keep the duration between the two inputs.
 	jQuery("#ts_time_in").change(function() {
@@ -19,8 +19,7 @@ jQuery(function() {
 			var time = jQuery.timePicker("#ts_time_in").getTime();	
 			// Calculate and update the time in the second input.
 			jQuery.timePicker("#ts_time_out").setTime(new Date(new Date(time.getTime() + duration)));
-			jQuery("#ts_hours_display").val(time_diff(duration));
-			jQuery("#ts_hours").val(time_diff(duration));
+			jQuery("#ts_hours_display").html(time_diff(duration)+' hrs');
 			oldTime = time;
 		}
 	});
@@ -35,8 +34,7 @@ jQuery(function() {
 			} else {
 				jQuery(this).removeClass("error");
 			}
-		jQuery("#ts_hours_display").val(time_diff(duration));
-		jQuery("#ts_hours").val(time_diff(duration));
+		jQuery("#ts_hours_display").html(time_diff(duration)+' hrs');
 	});
 
 });
