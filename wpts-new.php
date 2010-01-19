@@ -60,7 +60,7 @@ if(!isset($_REQUEST['doaction']) || ($_REQUEST['doaction'] == 'Add') || ($_REQUE
 		$ts_description = $_REQUEST['ts_description'];
 		$ts_time_in = date('Y-m-d H:i:s',strtotime($_REQUEST['ts_date'] . ' ' . $_REQUEST['ts_time_in']));
 		$ts_time_out = date('Y-m-d H:i:s',strtotime($_REQUEST['ts_date'] . ' ' . $_REQUEST['ts_time_out']));
-		$ts_validate = $wpdb->get_results("SELECT ts_time_in, ts_time_out FROM ".$wpts_db_table_name." WHERE ts_author = ".$ts_author." AND date_format(ts_time_in,'%Y-%m-%d') = '".date('Y-m-d',strtotime($ts_time_in))."'", ARRAY_N);
+		$ts_validate = $wpdb->get_results("SELECT ts_time_in, ts_time_out FROM ".$wpts_db_table_name." WHERE ts_author = ".$ts_author." AND date_format(ts_time_in,'%Y-%m-%d') = '".date('Y-m-d',strtotime($ts_time_in))."' AND ID != '".$_REQUEST['ID']."'", ARRAY_N);
 		$ts_validate_result = true;
 		for($i = 0; $i < sizeof($ts_validate); $i++ ) {
 			if($ts_validate_result === true) $ts_validate_result = wpts_validate_overlap($ts_validate[$i][0],$ts_validate[$i][1],$ts_time_in,$ts_time_out);
@@ -106,7 +106,7 @@ if(!isset($_REQUEST['doaction']) || ($_REQUEST['doaction'] == 'Add') || ($_REQUE
 	</tr>
 	<tr valign="top">
 	<th scope="row"><label for="ts_job_name">Job Name</label></th>
-	<td><input name="ts_job_name" type="text" id="ts_job_name" value="<?php echo $ts_job_name;?>" class="regular-text" />
+	<td><input name="ts_job_name" type="text" id="ts_job_name" value="<?php echo $ts_job_name;?>" class="regular-text" autocomplete="off"/>
 	<span class="description">Project / Client name</span></td>
 	</tr>
 	<tr valign="top">

@@ -21,23 +21,23 @@ if($_REQUEST['doaction'] == 'View') {
 	$ts_d2 = date('Y-m-d H:i:s', mktime(23,59,59,date('n',$temp_d2),date('j',$temp_d2),date('Y',$temp_d2)));
 	$ts_author = $_REQUEST['ts_author'];
 	if($_REQUEST['ts_report_type'] == 'list'){
-		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT ID, ts_author, date_format(ts_time_in,'%M %e, %Y'), ts_job_name, ts_description, date_format(ts_time_in, '%h:%i %p'), date_format(ts_time_out, '%h:%i %p'), SEC_TO_TIME(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out)/60) FROM ".$wpts_db_table_name." WHERE ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' ORDER BY ts_time_in", ARRAY_N); } 
-		else {$ts_timesheet = $wpdb->get_results("SELECT ID, ts_author, date_format(ts_time_in,'%M %e, %Y'), ts_job_name, ts_description, date_format(ts_time_in, '%h:%i %p'), date_format(ts_time_out, '%h:%i %p'), SEC_TO_TIME(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out)/60) FROM ".$wpts_db_table_name." WHERE ts_author = '".$ts_author."' AND ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' ORDER BY ts_time_in", ARRAY_N); }
+		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT ID, ts_author, date_format(ts_time_in,'%M %e, %Y'), ts_job_name, ts_description, date_format(ts_time_in, '%h:%i %p'), date_format(ts_time_out, '%h:%i %p'), SEC_TO_TIME(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out)) FROM ".$wpts_db_table_name." WHERE ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' ORDER BY ts_time_in", ARRAY_N); } 
+		else {$ts_timesheet = $wpdb->get_results("SELECT ID, ts_author, date_format(ts_time_in,'%M %e, %Y'), ts_job_name, ts_description, date_format(ts_time_in, '%h:%i %p'), date_format(ts_time_out, '%h:%i %p'), SEC_TO_TIME(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out)) FROM ".$wpts_db_table_name." WHERE ts_author = '".$ts_author."' AND ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' ORDER BY ts_time_in", ARRAY_N); }
 	} elseif($_REQUEST['ts_report_type'] == 'by_author') {
-		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT ts_author, SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out)/60)) FROM ".$wpts_db_table_name." WHERE ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY ts_author ORDER BY ts_time_in", ARRAY_N); } 
-		else {$ts_timesheet = $wpdb->get_results("SELECT ts_author, SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out)/60)) FROM ".$wpts_db_table_name." WHERE ts_author = '".$ts_author."' AND ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY ts_author ORDER BY ts_time_in", ARRAY_N); }	
+		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT ts_author, SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out))) FROM ".$wpts_db_table_name." WHERE ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY ts_author ORDER BY ts_time_in", ARRAY_N); } 
+		else {$ts_timesheet = $wpdb->get_results("SELECT ts_author, SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out))) FROM ".$wpts_db_table_name." WHERE ts_author = '".$ts_author."' AND ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY ts_author ORDER BY ts_time_in", ARRAY_N); }	
 	} elseif($_REQUEST['ts_report_type'] == 'by_job_name') {
-		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT ts_job_name, SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out)/60)) FROM ".$wpts_db_table_name." WHERE ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY ts_job_name ORDER BY ts_time_in", ARRAY_N); } 
-		else {$ts_timesheet = $wpdb->get_results("SELECT ts_job_name, SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out)/60)) FROM ".$wpts_db_table_name." WHERE ts_author = '".$ts_author."' AND ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY ts_job_name ORDER BY ts_time_in", ARRAY_N); }			
+		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT ts_job_name, SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out))) FROM ".$wpts_db_table_name." WHERE ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY ts_job_name ORDER BY ts_time_in", ARRAY_N); } 
+		else {$ts_timesheet = $wpdb->get_results("SELECT ts_job_name, SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out))) FROM ".$wpts_db_table_name." WHERE ts_author = '".$ts_author."' AND ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY ts_job_name ORDER BY ts_time_in", ARRAY_N); }			
 	} elseif($_REQUEST['ts_report_type'] == 'by_date') {
-		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_time_in,'%M %e, %Y'), SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out)/60)) FROM ".$wpts_db_table_name." WHERE ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY date_format(ts_time_in,'%M %e, %Y') ORDER BY ts_time_in", ARRAY_N); } 
-		else {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_time_in,'%M %e, %Y'), SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out)/60)) FROM ".$wpts_db_table_name." WHERE ts_author = '".$ts_author."' AND ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY date_format(ts_time_in,'%M %e, %Y') ORDER BY ts_time_in", ARRAY_N); }		
+		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_time_in,'%M %e, %Y'), SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out))) FROM ".$wpts_db_table_name." WHERE ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY date_format(ts_time_in,'%M %e, %Y') ORDER BY ts_time_in", ARRAY_N); } 
+		else {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_time_in,'%M %e, %Y'), SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out))) FROM ".$wpts_db_table_name." WHERE ts_author = '".$ts_author."' AND ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY date_format(ts_time_in,'%M %e, %Y') ORDER BY ts_time_in", ARRAY_N); }		
 	} elseif($_REQUEST['ts_report_type'] == 'by_week') {
-		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_time_in,'Week %u of %Y'), SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out)/60)) FROM ".$wpts_db_table_name." WHERE ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY WEEK(ts_time_in,1) ORDER BY ts_time_in", ARRAY_N); } 
-		else {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_time_in,'Week %u of %Y'), SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out)/60)) FROM ".$wpts_db_table_name." WHERE ts_author = '".$ts_author."' AND ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY WEEK(ts_time_in,1) ORDER BY ts_time_in", ARRAY_N); }		
+		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_time_in,'Week %u of %Y'), SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out))) FROM ".$wpts_db_table_name." WHERE ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY WEEK(ts_time_in,1) ORDER BY ts_time_in", ARRAY_N); } 
+		else {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_time_in,'Week %u of %Y'), SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out))) FROM ".$wpts_db_table_name." WHERE ts_author = '".$ts_author."' AND ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY WEEK(ts_time_in,1) ORDER BY ts_time_in", ARRAY_N); }		
 	} elseif($_REQUEST['ts_report_type'] == 'by_month') {
-		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_time_in,'%M, %Y'), SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out)/60)) FROM ".$wpts_db_table_name." WHERE ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY date_format(ts_time_in,'%M, %Y') ORDER BY ts_time_in", ARRAY_N); } 
-		else {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_time_in,'%M, %Y'), SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out)/60)) FROM ".$wpts_db_table_name." WHERE ts_author = '".$ts_author."' AND ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY date_format(ts_time_in,'%M, %Y') ORDER BY ts_time_in", ARRAY_N); }		
+		if($ts_author == 0) {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_time_in,'%M, %Y'), SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out))) FROM ".$wpts_db_table_name." WHERE ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY date_format(ts_time_in,'%M, %Y') ORDER BY ts_time_in", ARRAY_N); } 
+		else {$ts_timesheet = $wpdb->get_results("SELECT date_format(ts_time_in,'%M, %Y'), SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out))) FROM ".$wpts_db_table_name." WHERE ts_author = '".$ts_author."' AND ts_time_in >= '".$ts_d1."' AND ts_time_out <= '".$ts_d2."' GROUP BY date_format(ts_time_in,'%M, %Y') ORDER BY ts_time_in", ARRAY_N); }		
 	}
 	
 }
@@ -92,9 +92,9 @@ if(($_REQUEST['doaction'] == 'View') && ($_REQUEST['ts_report_type'] == 'list') 
 		<th scope="col" id="date" class="manage-column column-date" style="width:125px">Date</th>
 		<th scope="col" id="job" class="manage-column column-job" style="width:150px">Job Name</th>
 		<th scope="col" id="description" class="manage-column column-description" style="">Description</th>
-		<th scope="col" id="in" class="manage-column column-in" style="width:60px">Time In</th>
-		<th scope="col" id="out" class="manage-column column-out" style="width:60px">Time Out</th>
-		<th scope="col" id="hours" class="manage-column column-hours" style="width:60px">Hours</th>								
+		<th scope="col" id="in" class="manage-column column-in" style="width:75px">Time In</th>
+		<th scope="col" id="out" class="manage-column column-out" style="width:75px">Time Out</th>
+		<th scope="col" id="hours" class="manage-column column-hours" style="width:75px">Hours</th>								
 	  </tr>
 	  </thead>
 	  <tfoot>
@@ -103,9 +103,9 @@ if(($_REQUEST['doaction'] == 'View') && ($_REQUEST['ts_report_type'] == 'list') 
 		<th scope="col" class="manage-column column-date" style="width:125px">Date</th>
 		<th scope="col" class="manage-column column-job" style="width:150px">Job Name</th>
 		<th scope="col" class="manage-column column-description" style="">Description</th>
-		<th scope="col" class="manage-column column-in" style="width:100px">Time In</th>
-		<th scope="col" class="manage-column column-out" style="width:100px">Time Out</th>
-		<th scope="col" class="manage-column column-hours" style="width:100px">Hours</th>
+		<th scope="col" class="manage-column column-in" style="width:75px">Time In</th>
+		<th scope="col" class="manage-column column-out" style="width:75px">Time Out</th>
+		<th scope="col" class="manage-column column-hours" style="width:75px">Hours</th>
 	  </tr>
 	  </tfoot>	  
 	  <tbody>

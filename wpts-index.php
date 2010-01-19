@@ -4,7 +4,7 @@ Plugin Name: WP TimeSheets
 Plugin URI: http://webdlabs.com/projects/wp-timesheets/
 Description: A simple timesheet software for WordPress
 Author: Akshay Raje
-Version: 0.3
+Version: 0.4
 Author URI: http://webdlabs.com
 */
 
@@ -43,6 +43,7 @@ function wpts_install() {
 			$wpdb->query("INSERT INTO ".$wpts_db_table_name." (`ID`, `ts_author`, `ts_job_name`, `ts_description`, `ts_time_in`, `ts_time_out`) VALUES (NULL, ".$old_date[$i][1].", '".$old_date[$i][2]."', '".$old_date[$i][3]."', '".$old_date[$i][4]." ".$old_date[$i][5]."', '".$old_date[$i][4]." ".$old_date[$i][6]."')");		
 		}
 	}
+	@mkdir(dirname( __FILE__ ).'/reports', 0777); 
 }
 
 /*
@@ -68,12 +69,25 @@ function wpts_add_page() {
 
 function wpts_admin_header() {
 	if(!isset($_REQUEST['doaction']) || $_REQUEST['doaction'] == 'Add' || $_REQUEST['doaction'] == 'Edit') {
-		$url = get_settings('siteurl');
-		$url = $url . '/wp-content/plugins/wp-timesheets/';
-		echo '<link rel="stylesheet" type="text/css" media="all" href="'.$url.'style.css" />'."\n";
-		echo '<script type="text/javascript" src="'.$url.'js/jquery.timePicker.js"></script>'."\n";
-		echo '<script type="text/javascript" src="'.$url.'js/wpts-jslib.js"></script>'."\n";
+	global $wpdb;
+	$wpts_db_table_name = $wpdb->prefix.'wpts';
+	$ts_job_name_distinct = $wpdb->get_results("SELECT DISTINCT `ts_job_name` FROM ".$wpts_db_table_name, ARRAY_N);
+	for($i = 0; $i < sizeof($ts_job_name_distinct); $i++ ) {
+		$ts_job_name_distinct_str .= '"'.$ts_job_name_distinct[$i][0].'",';
+	}
+?>
+<link rel="stylesheet" type="text/css" media="all" href="<?php echo WP_PLUGIN_URL ?>/wp-timesheets/style.css" />
+<script type="text/javascript" src="<?php echo WP_PLUGIN_URL ?>/wp-timesheets/js/jquery.timePicker.js"></script>
+<script type="text/javascript" src="<?php echo WP_PLUGIN_URL ?>/wp-timesheets/js/jquery.autocomplete.js"></script>		
+<script type="text/javascript" src="<?php echo WP_PLUGIN_URL ?>/wp-timesheets/js/wpts-jslib.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("#ts_job_name").autocompleteArray([<?php echo $ts_job_name_distinct_str ?>], {matchSubset:1, matchContains:1, autoFill:true, minChars:1})
+})
+</script>
+<?php
 	}
 }
+
 
 ?>

@@ -4,7 +4,7 @@ Donate link: http://webdlabs.com/projects/donate/
 Tags: timesheet, dashboard, admin, users
 Requires at least: 2.6
 Tested up to: 2.8.5
-Stable tag: 0.3
+Stable tag: 0.4
 
 A simple timesheet application within WordPress Dashboard to manage time of your blog users.
 
@@ -21,16 +21,21 @@ A simple timesheet application within WordPress Dashboard to manage time of your
 1. Upload folder `wp-timesheets` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
-== Change Log ==
+== Changelog ==
 
-**Version 0.3**
+= 0.4 =
 
-1. Enhancement: Add multiple time sheet rows per day
+* Enhancement: Auto suggest existing job names while adding / editing job data
+* Minor Bug Fix
 
-**Version 0.2**
+= 0.3 =
 
-1. Minor Bug Fix
+* Enhancement: Add multiple time sheet rows per day
 
-**Version 0.1**
+= 0.2 =
 
-1. Beta Release
+* Minor Bug Fix
+
+= 0.1 =
+
+* Beta Release
