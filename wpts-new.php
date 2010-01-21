@@ -96,9 +96,9 @@ if(!isset($_REQUEST['doaction']) || ($_REQUEST['doaction'] == 'Add') || ($_REQUE
 	<th scope="row"><label for="ts_date">For user</label></th>
 	<td><?php wp_dropdown_users('name=ts_author&selected='.$ts_author)?></td>
 	</tr>
-	<? } else { ?>
+	<?php } else { ?>
 	<input type="hidden" name="ts_author" value="<?php echo $ts_author;?>" />
-	<? } ?>
+	<?php } ?>
 	<tr valign="top">
 	<th scope="row"><label for="ts_date">Date</label></th>
 	<td><input name="ts_date" type="text" id="ts_date" value="<?php echo $ts_date?>" class="regular-text"/>
