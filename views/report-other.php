@@ -2,13 +2,13 @@
 	  <thead>
 	  <tr>
 		<th scope="col" class="manage-column"><?=key($timesheet[0])?></th>
-		<th scope="col" class="manage-column" style="width:30%">Hours</th>								
+		<th scope="col" class="manage-column" style="width:30%"><?=_e('Hours', 'wp-timesheets' )?></th>								
 	  </tr>
 	  </thead>
 	  <tfoot>
 	  <tr>
 		<th scope="col" class="manage-column"><?=key($timesheet[0])?></th>	  
-		<th scope="col" class="manage-column" style="width:30%">Hours</th>
+		<th scope="col" class="manage-column" style="width:30%"><?=_e('Hours', 'wp-timesheets' )?></th>
 	  </tr>
 	  </tfoot>	  
 	  <tbody>

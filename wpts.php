@@ -4,7 +4,7 @@
 Plugin Name: WP Timesheets
 Plugin URI: http://webdlabs.com/projects/wp-timesheets/
 Description: Simple timesheet app for WordPress
-Version: 1.0
+Version: 1.1
 Author: Akshay Raje
 Author URI: http://webdlabs.com
 */

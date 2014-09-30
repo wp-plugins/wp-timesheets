@@ -14,7 +14,7 @@ class WP_Timesheets_Admin {
 	public static function admin_init() {
 		
 		// Load text domain
-		load_plugin_textdomain( 'wp_timesheets' );
+		load_plugin_textdomain( 'wp-timesheets' );
 		
 		// Load settings
 		WP_Timesheets_Admin::$settings = 
@@ -24,39 +24,39 @@ class WP_Timesheets_Admin {
 					'callback' => array('WP_Timesheets_Admin', 'section_1_cb'), 'page' => 'wp_timesheets_settings' ),			
 			),
 			'fields' => array(
-				array( 'id' => 'users_can', 'title' => __('Users can', 'wp_timesheets'), 
+				array( 'id' => 'users_can', 'title' => __('Users can', 'wp-timesheets'), 
 					'callback' => array('WP_Timesheets_Admin', 'fields_cb'), 'page' => 'wp_timesheets_settings', 
 					'section' => 'section_1',  
 					'args' => array( 'type' => 'group', 'data' => 'group_1' ) ),
-				array( 'id' => 'job_list_display', 'title' => __('Job list display', 'wp_timesheets'), 
+				array( 'id' => 'job_list_display', 'title' => __('Job list display', 'wp-timesheets'), 
 					'callback' => array('WP_Timesheets_Admin', 'fields_cb'), 'page' => 'wp_timesheets_settings', 
 					'section' => 'section_1', 
 					'args' => array( 'id' => 'job_list_display', 'type' => 'radio', 
 						'options' => array( 
-							array('value' => 'autocomplete', 'text' => __('Autocomplete — suggests existing jobs and allows adding new', 'wp_timesheets') ), 
-							array('value' => 'dropdown', 'text' => __('Dropdown — restricted job list (entered below)', 'wp_timesheets') ) ), 
-						'description' => __('Job list display options while managing timedata.', 'wp_timesheets') ) ),
-				array( 'id' => 'job_list', 'title' => __('Job list', 'wp_timesheets'), 
+							array('value' => 'autocomplete', 'text' => __('Autocomplete — suggests existing jobs and allows adding new', 'wp-timesheets') ), 
+							array('value' => 'dropdown', 'text' => __('Dropdown — restricted job list (entered below)', 'wp-timesheets') ) ), 
+						'description' => __('Job list display options while managing timedata.', 'wp-timesheets') ) ),
+				array( 'id' => 'job_list', 'title' => __('Job list', 'wp-timesheets'), 
 					'callback' => array('WP_Timesheets_Admin', 'fields_cb'), 'page' => 'wp_timesheets_settings', 
 					'section' => 'section_1', 
 					'args' => array( 'id' => 'job_list', 'type' => 'textarea', 
-						'description' => __('Used if job list is displayed as dropdown. Enter one job name per line.', 'wp_timesheets') ) ),
-				array( 'id' => 'show_description', 'title' => __('Description visibility', 'wp_timesheets'), 
+						'description' => __('Used if job list is displayed as dropdown. Enter one job name per line.', 'wp-timesheets') ) ),
+				array( 'id' => 'show_description', 'title' => __('Description visibility', 'wp-timesheets'), 
 					'callback' => array('WP_Timesheets_Admin', 'fields_cb'), 'page' => 'wp_timesheets_settings', 
 					'section' => 'section_1', 
-					'args' => array( 'id' => 'show_description', 'type' => 'checkbox', 'text' => __('Show description while adding/editing timedata.', 'wp_timesheets') ) ),					
-				array( 'id' => 'other_fields', 'title' => __('Other fields', 'wp_timesheets'), 
+					'args' => array( 'id' => 'show_description', 'type' => 'checkbox', 'text' => __('Show description while adding/editing timedata.', 'wp-timesheets') ) ),					
+				array( 'id' => 'other_fields', 'title' => __('Other fields', 'wp-timesheets'), 
 					'callback' => array('WP_Timesheets_Admin', 'fields_cb'), 'page' => 'wp_timesheets_settings', 
 					'section' => 'section_1', 
 					'args' => array( 'id' => 'other_fields', 'type' => 'textarea', 
-						'description' => __('Other hour input fields for users. This can be used for capturing hours spent on lunch, travel, breaks etc. Enter one field name per line. Leave blank for no other fields.', 'wp_timesheets') ) ),				
+						'description' => __('Other hour input fields for users. This can be used for capturing hours spent on lunch, travel, breaks etc. Enter one field name per line. Leave blank for no other fields.', 'wp-timesheets') ) ),				
 			),
 			'group_1' => array(
 				array( 'id' => 'sc_posts',  
-					'args' => array( 'id' => 'edit_timedata', 'type' => 'checkbox', 'text' => __('Edit own timedata', 'wp_timesheets') ) ),
+					'args' => array( 'id' => 'edit_timedata', 'type' => 'checkbox', 'text' => __('Edit own timedata', 'wp-timesheets') ) ),
 				array( 'id' => 'sc_widgets', 
-					'args' => array( 'id' => 'delete_timedata', 'type' => 'checkbox', 'text' => __('Delete own timedata', 'wp_timesheets') ) ),
-				'description' => __('Applicable for users below Admin level only. Admins have all rights.', 'wp_timesheets')
+					'args' => array( 'id' => 'delete_timedata', 'type' => 'checkbox', 'text' => __('Delete own timedata', 'wp-timesheets') ) ),
+				'description' => __('Applicable for users below Admin level only. Admins have all rights.', 'wp-timesheets')
 			),
 			'option_group' => 'wpts_options'
 		);
@@ -126,32 +126,32 @@ class WP_Timesheets_Admin {
 	public static function admin_menu() {
 		
 		$settings_page = add_options_page(
-			__('WP Timesheets Settings', 'wp_timesheets'), 
-			__('WP Timesheets', 'wp_timesheets'), 
+			__('WP Timesheets Settings', 'wp-timesheets'), 
+			__('WP Timesheets', 'wp-timesheets'), 
 			'manage_options', 
 			'wp_timesheets', 
 			array('WP_Timesheets_Admin', 'plugin_settings_page')
 		);
 		
 		$user_view_page = add_menu_page( 
-			__('Timesheets', 'wp_timesheets'), 
-			__('Timesheets', 'wp_timesheets'), 
+			__('Timesheets', 'wp-timesheets'), 
+			__('Timesheets', 'wp-timesheets'), 
 			'read', 
 			'wp_timesheets_user_report', 
 			array('WP_Timesheets_Admin', 'plugin_user_report_page')
 		);
 		add_submenu_page(
 			'wp_timesheets_user_report',
-			__('View Timesheets', 'wp_timesheets'), 
-			__('View Timesheets', 'wp_timesheets'), 
+			__('View Timesheets', 'wp-timesheets'), 
+			__('View Timesheets', 'wp-timesheets'), 
 			'read', 
 			'wp_timesheets_user_report', 
 			array('WP_Timesheets_Admin', 'plugin_user_report_page')
 		);
 		$user_manage_page = add_submenu_page(
 			'wp_timesheets_user_report',
-			__('Manage Timedata', 'wp_timesheets'), 
-			__('Manage Timedata', 'wp_timesheets'), 
+			__('Manage Timedata', 'wp-timesheets'), 
+			__('Manage Timedata', 'wp-timesheets'), 
 			'read', 
 			'wp_timesheets_user_manage', 
 			array('WP_Timesheets_Admin', 'plugin_user_manage_page')
@@ -255,7 +255,7 @@ class WP_Timesheets_Admin {
 	}	
 	
 	public static function plugin_settings_link($links) {
-		$settings_link = '<a href="options-general.php?page=wp_timesheets">' . __('Settings', 'wp_timesheets') . '</a>';
+		$settings_link = '<a href="options-general.php?page=wp-timesheets">' . __('Settings', 'wp-timesheets') . '</a>';
 		array_unshift($links, $settings_link);
 		return $links;
 	}

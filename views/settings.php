@@ -1,5 +1,5 @@
 <div class="wrap">
-    <h2><?=_e( 'WP Timesheets Settings' , 'wp_timesheets' )?></h2>
+    <h2><?=_e( 'WP Timesheets Settings' , 'wp-timesheets' )?></h2>
 	
 	<div id="poststuff">
 		<div id="post-body" class="metabox-holder columns-2">
@@ -16,7 +16,7 @@
 
 			<div id="postbox-container-1" class="postbox-container">
 				<div id="formatdiv" class="postbox ">
-					<h3 class="hndle"><span><?=_e( 'About WP Timesheets' , 'wp_timesheets' )?></span></h3>
+					<h3 class="hndle"><span><?=_e( 'About WP Timesheets' , 'wp-timesheets' )?></span></h3>
 					<div class="inside">
 						<p>WP Timesheets is a simple timesheet app within WordPress to manage time data of your WordPress users.</p>
 						<p>You may use the <a href="https://wordpress.org/support/plugin/wp-timesheets" target="_blank">support forum</a> for bugs or feature requests, 

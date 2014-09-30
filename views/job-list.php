@@ -1,7 +1,7 @@
 <?php if($display === 'autocomplete'): ?>
 
 <script type='text/javascript'>var jobList = <?=json_encode($data)?></script>
-<input name="job_name" type="text" id="job_name" class="regular-text automplete-jobs" value="<?=$value?>">
+<input name="job_name" type="text" id="job_name" class="regular-text automplete-jobs" value="<?=$value?>" required>
 
 <?php elseif($display === 'dropdown'): ?>
 

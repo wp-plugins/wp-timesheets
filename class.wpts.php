@@ -17,7 +17,7 @@ class WP_Timesheets {
 	
 	public static function view( $name, $vars = array() ) {
 		
-		load_plugin_textdomain( 'wp_timesheets' );
+		load_plugin_textdomain( 'wp-timesheets' );
 		$file = WPTS__PLUGIN_DIR . 'views/'. $name . '.php';
 		if( !empty($vars) )
 			extract( $vars, EXTR_OVERWRITE );
@@ -161,7 +161,7 @@ class WP_Timesheets {
 		$datetime2 = strtotime($args['date'] . ' ' . $args['time2']);
 		
 		if( $datetime1 === false || $datetime2 === false ){
-			WP_Timesheets::$error_msg = __('Error saving timedata: Invalid dates', 'wp_timesheets');
+			WP_Timesheets::$error_msg = __('Error saving timedata: Invalid dates', 'wp-timesheets');
 			return false;
 		}
 		
@@ -172,7 +172,7 @@ class WP_Timesheets {
 		
 		if( !isset($args['id']) ){
 			if( !empty($overlap) ){
-				WP_Timesheets::$error_msg = __('Error saving timedata: Job timedata already exists for the selected date and time', 'wp_timesheets');
+				WP_Timesheets::$error_msg = __('Error saving timedata: Job timedata already exists for the selected date and time', 'wp-timesheets');
 				return false;
 			}
 			$wpdb->insert(
@@ -190,11 +190,11 @@ class WP_Timesheets {
 			return $wpdb->insert_id;			
 		} else {
 			if( !isset($wpts_options['edit_timedata']) || $wpts_options['edit_timedata'] != 1 && current_user_can('manage_options') === false ){
-				WP_Timesheets::$error_msg = __('Error updating timedata: Insufficient access', 'wp_timesheets');
+				WP_Timesheets::$error_msg = __('Error updating timedata: Insufficient access', 'wp-timesheets');
 				return false;			
 			}			
 			if( count($overlap) === 1 && $overlap[0]['ID'] !== $args['id'] ){
-				WP_Timesheets::$error_msg = __('Error updating timedata: Job timedata already exists for the selected date and time', 'wp_timesheets');
+				WP_Timesheets::$error_msg = __('Error updating timedata: Job timedata already exists for the selected date and time', 'wp-timesheets');
 				return false;				
 			}
 			$wpdb->update(
@@ -218,7 +218,7 @@ class WP_Timesheets {
 	public static function get_timedata($id, $wpnonce = '') {
 		
 		if( wp_verify_nonce( $wpnonce, 'Get_'.$id ) === false){
-			WP_Timesheets::$error_msg = __('Error fetching timedata: Unauthorised access', 'wp_timesheets');
+			WP_Timesheets::$error_msg = __('Error fetching timedata: Unauthorised access', 'wp-timesheets');
 			return false;
 		}
 		
@@ -240,7 +240,7 @@ class WP_Timesheets {
 		$timesheet = $wpdb->get_results("SELECT ID as 'edit_id', ts_author as 'user', date_format(ts_time_in,'%e %b %Y') as 'date', ts_job_name as 'job_name', ts_description as 'description', date_format(ts_time_in, '%h:%i %p') as 'time1', date_format(ts_time_out, '%h:%i %p') as 'time2', ts_other_fields as 'Other' FROM ".WP_Timesheets::$wpts_table." WHERE $where_sql", ARRAY_A);
 		
 		if( empty($timesheet) ){
-			WP_Timesheets::$error_msg = __('Error fetching timedata: Invalid timedata or unauthorised access', 'wp_timesheets');
+			WP_Timesheets::$error_msg = __('Error fetching timedata: Invalid timedata or unauthorised access', 'wp-timesheets');
 			return false;
 		}		
 		
