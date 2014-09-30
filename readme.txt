@@ -1,4 +1,4 @@
-=== WP TimeSheets ===
+=== WP Timesheets ===
 Contributors: akshay_raje
 Donate link: http://webdlabs.com/projects/donate/
 Tags: timesheet, dashboard, admin, users
