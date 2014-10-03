@@ -34,7 +34,6 @@ class WP_Timesheets {
 		
 		global $wpdb;
 		$wpts_db_table_name = $wpdb->prefix.'wpts';
-		$wpts_db_version = '1.0';
 		$sql = "CREATE TABLE " . $wpts_db_table_name . " (
 		  `ID` bigint(20) unsigned NOT NULL auto_increment,
 		  `ts_author` bigint(20) NOT NULL,
@@ -53,22 +52,39 @@ class WP_Timesheets {
 		if($wpdb->get_var("SHOW TABLES LIKE '$wpts_db_table_name'") != $wpts_db_table_name) {
 			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 			dbDelta( $sql );
-			add_option('wpts_db_version', $wpts_db_version);
+			add_option( 'wpts_db_version', WPTS__DB_VERSION );
 		}
 		
-		$installed_ver = get_option( 'wpts_db_version' );
-		if ( $installed_ver != $wpts_db_version ) {
+		$installed_db_version = get_option( 'wpts_db_version' );
+		if ( $installed_db_version != WPTS__DB_VERSION ) {
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 			dbDelta( $sql );
-			update_option('wpts_db_version', $wpts_db_version);
+			update_option( 'wpts_db_version', WPTS__DB_VERSION );
 		}		
+			
+		$wpts_options = get_option( 'wpts_options' );
+		if ( $wpts_options === false || !isset($wpts_options['job_list_display']) ){
+			$default_wpts_options = array(
+				'edit_timedata' => 1,
+				'job_list_display' => 'autocomplete',
+				'show_description' => 1
+			);				
+			add_option( 'wpts_options', $default_wpts_options );
+		}
 		
-		$default_wpts_options = array(
-			'edit_timedata' => 1,
-			'job_list_display' => 'autocomplete',
-			'show_description' => 1
-		);
-		add_option( 'wpts_options', $default_wpts_options );			
+		$installed_version = get_option( 'wpts_version' );
+		if ($installed_version != WPTS__VERSION)
+			update_option( 'wpts_version', WPTS__VERSION );
+	}
+	
+	public static function maybe_plugin_activate() {
+		
+		$installed_db_version = get_option( 'wpts_db_version' );
+		$installed_version = get_option( 'wpts_version' );
+		
+		if ( $installed_version != WPTS__VERSION || $installed_db_version != WPTS__DB_VERSION )
+			WP_Timesheets::plugin_activate();
+		
 	}
 
 	/**

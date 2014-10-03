@@ -255,7 +255,7 @@ class WP_Timesheets_Admin {
 	}	
 	
 	public static function plugin_settings_link($links) {
-		$settings_link = '<a href="options-general.php?page=wp-timesheets">' . __('Settings', 'wp-timesheets') . '</a>';
+		$settings_link = '<a href="options-general.php?page=wp_timesheets">' . __('Settings', 'wp-timesheets') . '</a>';
 		array_unshift($links, $settings_link);
 		return $links;
 	}
@@ -321,9 +321,11 @@ class WP_Timesheets_Admin {
 			
 			WP_Timesheets::view( 'report-list', $vars );
 			
-		} else
+		} else {
 			
 			WP_Timesheets::view( 'report-other', $vars );
+            
+        }
 		
 	}
 
