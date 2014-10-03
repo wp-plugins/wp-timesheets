@@ -23,7 +23,7 @@ require_once( WPTS__PLUGIN_DIR . 'class.wpts.php' );
 register_activation_hook(__FILE__, array('WP_Timesheets', 'plugin_activate'));
 register_deactivation_hook(__FILE__, array('WP_Timesheets', 'plugin_deactivate'));
 
-add_action( 'plugins_loaded', array('WP_Timesheets', 'maybe_plugin_activate') );
+add_action( 'plugins_loaded', array('WP_Timesheets', 'maybe_plugin_update') );
 add_action( 'init', array('WP_Timesheets', 'init') );
 
 if (is_admin()) {

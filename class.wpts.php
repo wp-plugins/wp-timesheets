@@ -77,13 +77,15 @@ class WP_Timesheets {
 			update_option( 'wpts_version', WPTS__VERSION );
 	}
 	
-	public static function maybe_plugin_activate() {
+	public static function maybe_plugin_update() {
 		
 		$installed_db_version = get_option( 'wpts_db_version' );
 		$installed_version = get_option( 'wpts_version' );
 		
-		if ( $installed_version != WPTS__VERSION || $installed_db_version != WPTS__DB_VERSION )
-			WP_Timesheets::plugin_activate();
+		if ( $installed_version != WPTS__VERSION || $installed_db_version != WPTS__DB_VERSION ){
+          echo '<!-- WPTS__OUTDATED -->';
+          WP_Timesheets::plugin_activate();
+        }
 		
 	}
 
