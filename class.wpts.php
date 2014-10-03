@@ -123,11 +123,9 @@ class WP_Timesheets {
 			case 'list':
 				$timesheet = $wpdb->get_results("SELECT ID, ts_author as 'User', date_format(ts_time_in,'%M %e, %Y') as 'Date', ts_job_name as 'Job', ts_description as 'Description', date_format(ts_time_in, '%h:%i %p') as 'From', date_format(ts_time_out, '%h:%i %p') as 'To', TIME_FORMAT(SEC_TO_TIME(TIMESTAMPDIFF(SECOND,ts_time_in,ts_time_out)),'%H:%i') as 'Hours', ts_other_fields as 'Other' FROM ".WP_Timesheets::$wpts_table." WHERE $where_sql ORDER BY ts_time_in DESC", ARRAY_A);
 				foreach($timesheet as $key => $value){
-					if( !empty($value['Other']) ){
-						$other = unserialize( $value['Other'] );
-						foreach($other as $o_key => $o_value)
+					if( is_array( unserialize( $value['Other'] ) ) )
+						foreach(unserialize( $value['Other'] ) as $o_key => $o_value)
 							$timesheet[$key][$o_key] = $o_value;
-					}
 					$user = get_userdata($value['User']);
 					$timesheet[$key]['User ID'] = $user->ID;
 					$timesheet[$key]['User'] = $user->display_name.' ('.$user->user_login.')';					
