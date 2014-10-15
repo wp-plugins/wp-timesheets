@@ -170,6 +170,16 @@ class WP_Timesheets_Admin {
 		wp_enqueue_style( 'wpts-css', plugins_url( '/views/css/wpts.css', __FILE__ ), array(), WPTS__VERSION );
 		
 	}
+    
+    public static function current_user_can( $capability ){
+        
+        $cu = wp_get_current_user();
+        $cuc = current_user_can( $capability );
+        $cugrc = $cu->get_role_caps();
+        if($cuc === true && isset( $cugrc[$capability] ) && $cugrc[$capability] === true )
+          return true;
+        return false;
+    }
 	
 	public static function plugin_settings_page() {
 		WP_Timesheets::view( 'settings' );

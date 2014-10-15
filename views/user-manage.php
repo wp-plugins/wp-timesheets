@@ -11,7 +11,7 @@
 <?php endif; ?>			
 		<?php wp_nonce_field( 'Add' ); ?>	
 		<table class="form-table">
-<?php if (current_user_can('manage_options')) : ?>		
+<?php if (WP_Timesheets_Admin::current_user_can('manage_options')) : ?>		
 			<tr>
 				<th scope="row"><?=_e('User', 'wp-timesheets' )?></th>
 				<td><?php wp_dropdown_users( 'name=user&selected='.$user );?></td>
