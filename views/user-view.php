@@ -9,7 +9,7 @@
 	
 <?php if ($view_id !== false) : ?>	
 	<table class="form-table">
-<?php if (current_user_can('manage_options')) : 
+<?php if (WP_Timesheets_Admin::current_user_can('manage_options')) : 
 	$user = get_userdata($user)?>		
 		<tr>
 			<th scope="row"><?=_e('User', 'wp-timesheets' )?></th>

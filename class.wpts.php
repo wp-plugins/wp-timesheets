@@ -104,7 +104,7 @@ class WP_Timesheets {
 		
 		global $wpdb;
 		
-		if ( current_user_can('manage_options') ){
+		if ( WP_Timesheets_Admin::current_user_can('manage_options') ){
 			if (!isset($args['user']))
 				$args['user'] = 0;
 		} else {
@@ -167,7 +167,7 @@ class WP_Timesheets {
 		global $wpdb;
 		$wpts_options = get_option( WP_Timesheets_Admin::$settings['option_group'] );
 		
-		if( current_user_can('manage_options') === false )
+		if( WP_Timesheets_Admin::current_user_can('manage_options') === false )
 			$args['user'] = WP_Timesheets::$current_user->ID;
 		
 		if( !isset($args['description']) )
@@ -205,7 +205,7 @@ class WP_Timesheets {
 					);
 			return $wpdb->insert_id;			
 		} else {
-			if( !isset($wpts_options['edit_timedata']) || $wpts_options['edit_timedata'] != 1 && current_user_can('manage_options') === false ){
+			if( !isset($wpts_options['edit_timedata']) || $wpts_options['edit_timedata'] != 1 && WP_Timesheets_Admin::current_user_can('manage_options') === false ){
 				WP_Timesheets::$error_msg = __('Error updating timedata: Insufficient access', 'wp-timesheets');
 				return false;			
 			}			
@@ -241,7 +241,7 @@ class WP_Timesheets {
 		global $wpdb;
 		$args['id'] = $id;
 		
-		if ( current_user_can('manage_options') ){
+		if ( WP_Timesheets_Admin::current_user_can('manage_options') ){
 			if (!isset($args['user']))
 				$args['user'] = 0;
 		} else {

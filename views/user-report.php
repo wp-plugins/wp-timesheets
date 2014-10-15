@@ -4,7 +4,7 @@
 	<div class="tablenav top">
 		<form action="" method="post" id="user-report">		
 			<?=_e( 'For' , 'wp-timesheets' )?> 
-<?php if (current_user_can('manage_options')) : 
+<?php if (WP_Timesheets_Admin::current_user_can('manage_options')) : 
 			wp_dropdown_users( 'name=user&show_option_all=All Users&selected='.$user );
 else : 
 			echo '<b>'.WP_Timesheets::$current_user->display_name.'</b>';
@@ -22,7 +22,7 @@ endif; ?>
 			<?=_e( 'grouped by' , 'wp-timesheets' )?>
 			<select name="report_type">
 				<option value="list" <?=selected( 'list', $report_type)?>><?=_e( 'all records' , 'wp-timesheets' )?></option>
-<?php if (current_user_can('manage_options')) : ?>
+<?php if (WP_Timesheets_Admin::current_user_can('manage_options')) : ?>
 				<option value="by_user" <?=selected( 'by_user', $report_type)?>><?=_e( 'user' , 'wp-timesheets' )?></option>
 <?php endif; ?>
 				<option value="by_job_name" <?=selected( 'by_job_name', $report_type)?>><?=_e( 'job name' , 'wp-timesheets' )?></option>
