@@ -278,7 +278,7 @@ class WP_Timesheets_Admin {
 		$vars['display'] = $wpts_options['job_list_display'];
 		
 		$existing_jobs = $wpdb->get_results("SELECT ts_job_name as 'job_name' FROM ".WP_Timesheets::$wpts_table." GROUP BY ts_job_name ORDER BY ts_job_name ASC", ARRAY_A);
-		$existing_job_list = [];
+		$existing_job_list = array();
 		foreach($existing_jobs as $job)
 			$existing_job_list[] = $job['job_name'];	
 	
