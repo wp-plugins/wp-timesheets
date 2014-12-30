@@ -4,7 +4,7 @@
 Plugin Name: WP Timesheets
 Plugin URI: http://webdlabs.com/projects/wp-timesheets/
 Description: Simple timesheet app for WordPress
-Version: 1.3
+Version: 1.4
 Author: Akshay Raje
 Author URI: http://webdlabs.com
 */
@@ -15,7 +15,7 @@ if (!function_exists('add_action'))
 
 define('WPTS__PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WPTS__PLUGIN_FILE', plugin_basename(__FILE__));
-define('WPTS__VERSION', '1.3');
+define('WPTS__VERSION', '1.4');
 define('WPTS__DB_VERSION', '1.0');
 
 require_once( WPTS__PLUGIN_DIR . 'class.wpts.php' );

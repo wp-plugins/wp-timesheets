@@ -1,1 +1,1 @@
-<p><?=_e('No data found for the selected date range.', 'wp-timesheets' )?></p>
+<p><?php _e('No data found for the selected date range.', 'wp-timesheets' )?></p>
