@@ -1,5 +1,5 @@
 <div class="wrap">
-	<h2><?php sprintf( __( '%s Timedata' , 'wp-timesheets' ), ucfirst($verb) )?></h2>
+	<h2><?php echo sprintf( __( '%s Timedata' , 'wp-timesheets' ), ucfirst($verb) )?></h2>
 	
 <?php if ($add_id === false || $edit_id === false) : ?>
 	<div id="setting-error-settings_updated" class="error settings-error"><p><strong><?php echo $error_msg?></strong></p></div>	
